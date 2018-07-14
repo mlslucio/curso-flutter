@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './screens/auth.dart';
+import './screens/product_admin.dart';
 
 void main() {
   runApp(MyApp());
@@ -11,6 +12,9 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
         theme:
             ThemeData(brightness: Brightness.light, primarySwatch: Colors.red),
-        home: Scaffold(body: AuthScreen()));
+        routes: {
+          '/': (BuildContext context) => AuthScreen(),
+          '/admin': (BuildContext context) => ProductAdminScreen(),
+        });
   }
 }

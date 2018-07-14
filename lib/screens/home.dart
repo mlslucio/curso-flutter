@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../product_manager.dart';
+import 'product_admin.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -9,11 +10,12 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           children: <Widget>[
             AppBar(
+              automaticallyImplyLeading: false,
               title: Text('Choose'),
             ),
             ListTile(
-              title: Text('Manage Products'),
-            )
+                title: Text('Manage Products'),
+                onTap: () => Navigator.pushReplacementNamed(context, '/admin'))
           ],
         ),
       ),
