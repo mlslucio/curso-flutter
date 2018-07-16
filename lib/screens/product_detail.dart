@@ -12,8 +12,8 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () {
-        Navigator.pop(context, true);
-        return Future.value(false);
+        //Navigator.pop(context, true);
+        return Future.value(true);
       },
       child: Scaffold(
           appBar: AppBar(title: Text(title)),
@@ -21,14 +21,35 @@ class ProductDetailScreen extends StatelessWidget {
               child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Image.asset(imageUrl),
+              Image.asset(this.imageUrl),
               Container(child: Text(title), padding: EdgeInsets.all(10.0)),
               Container(
                 child: RaisedButton(
-                  color: Theme.of(context).accentColor,
-                  child: Text('Delete'),
-                  onPressed: () => Navigator.pop(context, true),
-                ),
+                    color: Theme.of(context).accentColor,
+                    child: Text('Delete'),
+                    onPressed: () {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text('Are you sure?'),
+                              content: Text('alert body'),
+                              actions: <Widget>[
+                                FlatButton(
+                                  child: Text('Delete'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    Navigator.pop(context, true);
+                                  },
+                                ),
+                                FlatButton(
+                                  child: Text('Cancel'),
+                                  onPressed: () => Navigator.pop(context),
+                                )
+                              ],
+                            );
+                          });
+                    }),
                 padding: EdgeInsets.all(10.0),
               ),
             ],

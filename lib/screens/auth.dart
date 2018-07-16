@@ -10,13 +10,7 @@ class AuthScreen extends StatelessWidget {
         title: Text('Login'),
       ),
       body: Center(
-        child: RaisedButton(
-          onPressed: () => Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => HomeScreen())),
-          child: Text('LOGIN'),
-        ),
+        child: RaisedButton(onPressed: () => {}),
       ),
     );
   }

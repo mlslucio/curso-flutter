@@ -3,6 +3,10 @@ import '../product_manager.dart';
 import 'product_admin.dart';
 
 class HomeScreen extends StatelessWidget {
+  final List<Map<String, dynamic>> _products;
+
+  HomeScreen(this._products);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,7 +26,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text('Easy List'),
       ),
-      body: ProductManager(),
+      body: ProductManager(this._products),
     );
   }
 }
