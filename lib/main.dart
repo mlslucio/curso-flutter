@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './screens/home.dart';
 import './screens/product_admin.dart';
 import './screens/product_detail.dart';
+import './screens/auth.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,12 +33,15 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
-        theme:
-            ThemeData(brightness: Brightness.light, primarySwatch: Colors.red),
+        theme: ThemeData(
+            brightness: Brightness.light,
+            primarySwatch: Colors.red,
+            fontFamily: 'Oswald'),
         routes: {
           '/': (BuildContext context) => HomeScreen(_products),
+          '/auth': (BuildContext context) => AuthScreen(),
           '/admin': (BuildContext context) =>
-              ProductAdminScreen(_addProduct, _deleteProduct),
+              ProductAdminScreen(_addProduct, _deleteProduct, _products),
         },
         onGenerateRoute: (RouteSettings settings) {
           final List<String> pathElements = settings.name.split('/');
@@ -57,7 +61,7 @@ class _MyAppState extends State<MyApp> {
         onUnknownRoute: (RouteSettings settings) {
           return new MaterialPageRoute(
               builder: (BuildContext context) =>
-                  ProductAdminScreen(_addProduct, _deleteProduct));
+                  ProductAdminScreen(_addProduct, _deleteProduct, _products));
         });
   }
 }

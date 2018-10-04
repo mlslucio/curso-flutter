@@ -6,8 +6,9 @@ import 'product_list.dart';
 class ProductAdminScreen extends StatelessWidget {
   final Function addProduct;
   final Function deleteProduct;
+  final List<Map<String, dynamic>> products;
 
-  ProductAdminScreen(this.addProduct, this.deleteProduct);
+  ProductAdminScreen(this.addProduct, this.deleteProduct, this.products);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,12 @@ class ProductAdminScreen extends StatelessWidget {
                   ),
                   ListTile(
                       title: Text('All Products'),
-                      onTap: () => Navigator.pushReplacementNamed(context, '/'))
+                      onTap: () =>
+                          Navigator.pushReplacementNamed(context, '/')),
+                  ListTile(
+                      title: Text('Auth'),
+                      onTap: () =>
+                          Navigator.pushReplacementNamed(context, '/auth'))
                 ],
               ),
             ),
@@ -42,7 +48,7 @@ class ProductAdminScreen extends StatelessWidget {
             body: TabBarView(
               children: <Widget>[
                 ProductCreateScreen(addProduct),
-                ProductListScreen()
+                ProductListScreen(products)
               ],
             )));
   }
