@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '../models/product.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../scoped-model/product.dart';
 
 class ProductCreateScreen extends StatefulWidget {
-  final Function addProduct;
-
-  ProductCreateScreen(this.addProduct);
+  ProductCreateScreen();
 
   @override
   State<StatefulWidget> createState() {
@@ -57,23 +58,25 @@ class _ProductCreateState extends State<ProductCreateScreen> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    RaisedButton(
-                      color: Theme.of(context).accentColor,
-                      textColor: Colors.white,
-                      child: Text('Save'),
-                      onPressed: () {
-                        _formKey.currentState.validate();
-                        _formKey.currentState.save();
-                        final Map<String, dynamic> product = {
-                          'title': title,
-                          'description': description,
-                          'image': 'assets/food.jpg',
-                          'price': price
-                        };
-                        widget.addProduct(product);
-                        Navigator.pushReplacementNamed(context, "/");
-                      },
-                    )
+                    ScopedModelDescendant<ProductsModel>(builder:
+                        (BuildContext context, Widget child,
+                            ProductsModel model) {
+                      return RaisedButton(
+                        color: Theme.of(context).accentColor,
+                        textColor: Colors.white,
+                        child: Text('Save'),
+                        onPressed: () {
+                          _formKey.currentState.validate();
+                          _formKey.currentState.save();
+                          model.addProduct(Product(
+                              title: title,
+                              description: description,
+                              image: 'assets/food.jpg',
+                              price: price));
+                          Navigator.pushReplacementNamed(context, "/");
+                        },
+                      );
+                    })
                   ],
                 ))));
   }

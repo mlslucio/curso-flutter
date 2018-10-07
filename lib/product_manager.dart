@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:scoped_model/scoped_model.dart';
 import './products.dart';
-import './product_control.dart';
 
 class ProductManager extends StatelessWidget {
-  final List<Map<String, dynamic>> _products;
-
-  ProductManager(this._products);
+  ProductManager();
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [Expanded(child: Products(_products))]);
+    return Column(children: [Expanded(child: Products())]);
   }
 }

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import '../product_manager.dart';
+import '../models/product.dart';
 import 'dart:async';
 
 class ProductDetailScreen extends StatelessWidget {
-  final String title;
-  final String imageUrl;
+  final Product product;
+  final Function _deleteProduct;
 
-  ProductDetailScreen(this.title, this.imageUrl);
+  ProductDetailScreen(this.product, this._deleteProduct);
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +16,13 @@ class ProductDetailScreen extends StatelessWidget {
         return Future.value(true);
       },
       child: Scaffold(
-          appBar: AppBar(title: Text(title)),
+          appBar: AppBar(title: Text(product.title)),
           body: ListView(children: <Widget>[
             Column(
               children: <Widget>[
-                Image.asset(this.imageUrl),
-                Container(child: Text(title), padding: EdgeInsets.all(10.0)),
+                Image.asset(product.image),
+                Container(
+                    child: Text(product.title), padding: EdgeInsets.all(10.0)),
                 Container(
                   child: RaisedButton(
                       color: Theme.of(context).accentColor,
@@ -37,6 +38,7 @@ class ProductDetailScreen extends StatelessWidget {
                                   FlatButton(
                                     child: Text('Delete'),
                                     onPressed: () {
+                                      this._deleteProduct(product);
                                       Navigator.pop(context);
                                       Navigator.pop(context, true);
                                     },
