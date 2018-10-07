@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../scoped-model/product.dart';
 import '../models/product.dart';
 
 class ProductEditScreen extends StatefulWidget {
@@ -81,24 +83,28 @@ class _ProductEditState extends State<ProductEditScreen> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        RaisedButton(
-                          color: Theme.of(context).accentColor,
-                          textColor: Colors.white,
-                          child: Text('Save'),
-                          onPressed: () {
-                            _formKey.currentState.validate();
-                            _formKey.currentState.save();
+                        ScopedModelDescendant<ProductsModel>(
+                            builder: (BuildContext context, Widget child,
+                                    ProductsModel model) =>
+                                RaisedButton(
+                                  color: Theme.of(context).accentColor,
+                                  textColor: Colors.white,
+                                  child: Text('Save'),
+                                  onPressed: () {
+                                    _formKey.currentState.validate();
+                                    _formKey.currentState.save();
 
-                            widget.updateProduct(
-                                widget.index,
-                                Product(
-                                    title: title,
-                                    description: description,
-                                    image: 'assets/food.jpg',
-                                    price: price));
-                            Navigator.pushReplacementNamed(context, "/");
-                          },
-                        )
+                                    model.updateProduct(
+                                        widget.index,
+                                        Product(
+                                            title: title,
+                                            description: description,
+                                            image: 'assets/food.jpg',
+                                            price: price));
+                                    Navigator.pushReplacementNamed(
+                                        context, "/");
+                                  },
+                                )),
                       ],
                     )))));
   }

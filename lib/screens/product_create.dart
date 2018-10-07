@@ -58,25 +58,22 @@ class _ProductCreateState extends State<ProductCreateScreen> {
                     SizedBox(
                       height: 10.0,
                     ),
-                    ScopedModelDescendant<ProductsModel>(builder:
-                        (BuildContext context, Widget child,
-                            ProductsModel model) {
-                      return RaisedButton(
-                        color: Theme.of(context).accentColor,
-                        textColor: Colors.white,
-                        child: Text('Save'),
-                        onPressed: () {
-                          _formKey.currentState.validate();
-                          _formKey.currentState.save();
-                          model.addProduct(Product(
-                              title: title,
-                              description: description,
-                              image: 'assets/food.jpg',
-                              price: price));
-                          Navigator.pushReplacementNamed(context, "/");
-                        },
-                      );
-                    })
+                    ScopedModelDescendant<ProductsModel>(
+                        builder: (context, child, model) => RaisedButton(
+                              color: Theme.of(context).accentColor,
+                              textColor: Colors.white,
+                              child: Text('Save'),
+                              onPressed: () {
+                                _formKey.currentState.validate();
+                                _formKey.currentState.save();
+                                model.addProduct(Product(
+                                    title: title,
+                                    description: description,
+                                    image: 'assets/food.jpg',
+                                    price: price));
+                                Navigator.pushReplacementNamed(context, "/");
+                              },
+                            )),
                   ],
                 ))));
   }
