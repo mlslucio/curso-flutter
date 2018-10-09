@@ -1,61 +1,68 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import 'dart:async';
+import 'package:scoped_model/scoped_model.dart';
+import '../scoped-model/product.dart';
 
 class ProductDetailScreen extends StatelessWidget {
-  final Product product;
-  final Function _deleteProduct;
+  final int index;
 
-  ProductDetailScreen(this.product, this._deleteProduct);
+  ProductDetailScreen(this.index);
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () {
-        //Navigator.pop(context, true);
-        return Future.value(true);
-      },
-      child: Scaffold(
-          appBar: AppBar(title: Text(product.title)),
-          body: ListView(children: <Widget>[
-            Column(
-              children: <Widget>[
-                Image.asset(product.image),
-                Container(
-                    child: Text(product.title), padding: EdgeInsets.all(10.0)),
-                Container(
-                  child: RaisedButton(
-                      color: Theme.of(context).accentColor,
-                      child: Text('Delete'),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text('Are you sure?'),
-                                content: Text('alert body'),
-                                actions: <Widget>[
-                                  FlatButton(
-                                    child: Text('Delete'),
-                                    onPressed: () {
-                                      this._deleteProduct(product);
-                                      Navigator.pop(context);
-                                      Navigator.pop(context, true);
-                                    },
-                                  ),
-                                  FlatButton(
-                                    child: Text('Cancel'),
-                                    onPressed: () => Navigator.pop(context),
-                                  )
-                                ],
-                              );
-                            });
-                      }),
-                  padding: EdgeInsets.all(10.0),
-                ),
-              ],
-            )
-          ])),
-    );
+        onWillPop: () {
+          //Navigator.pop(context, true);
+          return Future.value(true);
+        },
+        child: ScopedModelDescendant<ProductsModel>(
+            builder: (BuildContext context, Widget child,
+                    ProductsModel model) =>
+                Scaffold(
+                    appBar:
+                        AppBar(title: Text(model.products[this.index].title)),
+                    body: ListView(children: <Widget>[
+                      Column(
+                        children: <Widget>[
+                          Image.asset(model.products[this.index].image),
+                          Container(
+                              child: Text(model.products[this.index].title),
+                              padding: EdgeInsets.all(10.0)),
+                          Container(
+                            child: RaisedButton(
+                                color: Theme.of(context).accentColor,
+                                child: Text('Delete'),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Are you sure?'),
+                                          content: Text('alert body'),
+                                          actions: <Widget>[
+                                            FlatButton(
+                                              child: Text('Delete'),
+                                              onPressed: () {
+                                                model.deleteProduct(
+                                                    model.products[this.index]);
+                                                Navigator.pop(context);
+                                                Navigator.pop(context, true);
+                                              },
+                                            ),
+                                            FlatButton(
+                                              child: Text('Cancel'),
+                                              onPressed: () =>
+                                                  Navigator.pop(context),
+                                            )
+                                          ],
+                                        );
+                                      });
+                                }),
+                            padding: EdgeInsets.all(10.0),
+                          ),
+                        ],
+                      )
+                    ]))));
   }
 }

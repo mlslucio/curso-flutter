@@ -22,6 +22,12 @@ class HomeScreen extends StatelessWidget {
         ),
       ),
       appBar: AppBar(
+        actions: <Widget>[
+          FlatButton(
+            child: Icon(Icons.favorite),
+            onPressed: () {},
+          )
+        ],
         title: Text('Easy List'),
       ),
       body: ProductManager(),

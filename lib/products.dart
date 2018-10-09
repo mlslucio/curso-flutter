@@ -15,7 +15,18 @@ class Products extends StatelessWidget {
                   child: Image.asset(model.products[index].image),
                 ),
                 Text(model.products[index].title),
-                Text(model.products[index].price.toString())
+                Text(model.products[index].price.toString()),
+                FlatButton(
+                  child: Icon(Icons.info),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, '/product/' + index.toString());
+                  },
+                ),
+                FlatButton(
+                  child: Icon(Icons.favorite_border),
+                  onPressed: () {},
+                )
               ],
             );
           },
