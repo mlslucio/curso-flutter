@@ -23,10 +23,15 @@ class Products extends StatelessWidget {
                         context, '/product/' + index.toString());
                   },
                 ),
+                
+                ScopedModelDescendant<ProductsModel>(
+                builder: (BuildContext context, Widget child, ProductsModel model) => 
                 FlatButton(
-                  child: Icon(Icons.favorite_border),
-                  onPressed: () {},
-                )
+                  child: Icon(model.products[index].isFavorite ? Icons.favorite : Icons.favorite_border),
+                  onPressed: () {
+                    model.toggleProductFavoriteStatus(index);
+                  },
+                ))
               ],
             );
           },

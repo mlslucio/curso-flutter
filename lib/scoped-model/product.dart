@@ -19,4 +19,16 @@ class ProductsModel extends Model {
   void updateProduct(int index, Product product) {
     _products[index] = product;
   }
+
+  void toggleProductFavoriteStatus(int index){
+    final bool isCurrentlyFavorite = _products[index].isFavorite;
+    final bool newFavoriteStatus = !isCurrentlyFavorite; 
+    Product product = Product(title: _products[index].title, description: _products[index].description,
+        image: 'assets/food.jpg', price: _products[index].price, isFavorite: newFavoriteStatus);
+
+     this.updateProduct(index, product );
+     _products[index] = product;
+     notifyListeners();
+
+  }
 }
