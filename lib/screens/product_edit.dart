@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../scoped-model/product.dart';
+import '../scoped-model/main.dart';
 import '../models/product.dart';
 
 class ProductEditScreen extends StatefulWidget {
@@ -20,12 +20,7 @@ class ProductEditScreen extends StatefulWidget {
 }
 
 class _ProductEditState extends State<ProductEditScreen> {
-  _ProductEditState1() {
-    widget.product != null
-        ? print("produto" + widget.product.toString())
-        : print('null');
-  }
-
+ 
   String title = '';
   String description = '';
   double price = 0.0;
@@ -83,9 +78,9 @@ class _ProductEditState extends State<ProductEditScreen> {
                         SizedBox(
                           height: 10.0,
                         ),
-                        ScopedModelDescendant<ProductsModel>(
+                        ScopedModelDescendant<MainModel>(
                             builder: (BuildContext context, Widget child,
-                                    ProductsModel model) =>
+                                    MainModel model) =>
                                 RaisedButton(
                                   color: Theme.of(context).accentColor,
                                   textColor: Colors.white,

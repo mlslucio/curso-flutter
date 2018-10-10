@@ -4,7 +4,7 @@ import './screens/product_admin.dart';
 import './screens/product_detail.dart';
 import './screens/auth.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'scoped-model/product.dart';
+import 'scoped-model/main.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,13 +21,14 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ScopedModel<ProductsModel>(
-      model: ProductsModel(),
+    return ScopedModel<MainModel>(
+      model: MainModel(),
       child: MaterialApp(
           theme: ThemeData(
               brightness: Brightness.light,
               primarySwatch: Colors.red,
               fontFamily: 'Oswald'),
+              //home: AuthScreen(),
           routes: {
             '/': (BuildContext context) => HomeScreen(),
             '/auth': (BuildContext context) => AuthScreen(),

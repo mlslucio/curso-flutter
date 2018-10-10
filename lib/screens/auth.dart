@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../scoped-model/main.dart';
 
 class AuthScreen extends StatefulWidget {
   @override
@@ -68,16 +70,17 @@ class _AuthState extends State<AuthScreen> {
                 SizedBox(
                   height: 10.0,
                 ),
+                    ScopedModelDescendant<MainModel>(
+                        builder: (context, child, model) =>
                 RaisedButton(
                   color: Theme.of(context).primaryColor,
                   textColor: Colors.white,
                   child: Text('LOGIN'),
                   onPressed: () {
-                    print(_emailValue);
-                    print(_passwordValue);
+                 model.login(_emailValue, _passwordValue);
                     Navigator.pushReplacementNamed(context, '/products');
                   },
-                ),
+                )),
               ],
             )),
       ),

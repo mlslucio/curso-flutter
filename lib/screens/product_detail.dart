@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 import 'dart:async';
 import 'package:scoped_model/scoped_model.dart';
-import '../scoped-model/product.dart';
+import '../scoped-model/main.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final int index;
@@ -16,9 +16,9 @@ class ProductDetailScreen extends StatelessWidget {
           //Navigator.pop(context, true);
           return Future.value(true);
         },
-        child: ScopedModelDescendant<ProductsModel>(
+        child: ScopedModelDescendant<MainModel>(
             builder: (BuildContext context, Widget child,
-                    ProductsModel model) =>
+                    MainModel model) =>
                 Scaffold(
                     appBar:
                         AppBar(title: Text(model.products[this.index].title)),

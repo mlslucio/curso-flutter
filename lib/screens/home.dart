@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../product_manager.dart';
 import 'package:scoped_model/scoped_model.dart';
-import '../scoped-model/product.dart';
+import '../scoped-model/main.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
       ),
       appBar: AppBar(
         actions: <Widget>[
-          ScopedModelDescendant<ProductsModel>(
+          ScopedModelDescendant<MainModel>(
               builder: (context, child, model) => FlatButton(
                     child: Icon(model.favoriteStatus
                         ? Icons.favorite
@@ -33,7 +33,7 @@ class HomeScreen extends StatelessWidget {
                     },
                   )),
         ],
-        title: Text('Easy Lissst'),
+        title: Text('Easy List'),
       ),
       body: ProductManager(),
     );

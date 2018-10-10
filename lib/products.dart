@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'scoped-model/product.dart';
+import 'scoped-model/main.dart';
 
 class Products extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ScopedModelDescendant<ProductsModel>(
-      builder: (BuildContext context, Widget child, ProductsModel model) {
+    return ScopedModelDescendant<MainModel>(
+      builder: (BuildContext context, Widget child, MainModel model) {
         return ListView.builder(
           itemBuilder: (BuildContext context, int index) {
             return Column(
@@ -16,6 +16,7 @@ class Products extends StatelessWidget {
                 ),
                 Text(model.products[index].title),
                 Text(model.products[index].price.toString()),
+                Text(model.products[index].userEmail),
                 FlatButton(
                   child: Icon(Icons.info),
                   onPressed: () {
@@ -23,9 +24,9 @@ class Products extends StatelessWidget {
                         context, '/product/' + index.toString());
                   },
                 ),
-                ScopedModelDescendant<ProductsModel>(
+                ScopedModelDescendant<MainModel>(
                     builder: (BuildContext context, Widget child,
-                            ProductsModel model) =>
+                            MainModel model) =>
                         FlatButton(
                           child: Icon(model.products[index].isFavorite
                               ? Icons.favorite
