@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'product_create.dart';
 import 'product_list.dart';
-import '../models/product.dart';
+import '../scoped-model/main.dart';
 
 class ProductAdminScreen extends StatelessWidget {
+
+  ProductAdminScreen();
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(

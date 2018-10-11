@@ -21,13 +21,13 @@ class ProductDetailScreen extends StatelessWidget {
                     MainModel model) =>
                 Scaffold(
                     appBar:
-                        AppBar(title: Text(model.products[this.index].title)),
+                        AppBar(title: Text(model.allProducts[this.index].title)),
                     body: ListView(children: <Widget>[
                       Column(
                         children: <Widget>[
-                          Image.asset(model.products[this.index].image),
+                          Image.asset(model.allProducts[this.index].image),
                           Container(
-                              child: Text(model.products[this.index].title),
+                              child: Text(model.allProducts[this.index].title),
                               padding: EdgeInsets.all(10.0)),
                           Container(
                             child: RaisedButton(
@@ -45,7 +45,7 @@ class ProductDetailScreen extends StatelessWidget {
                                               child: Text('Delete'),
                                               onPressed: () {
                                                 model.deleteProduct(
-                                                    model.products[this.index]);
+                                                    model.allProducts[this.index]);
                                                 Navigator.pop(context);
                                                 Navigator.pop(context, true);
                                               },

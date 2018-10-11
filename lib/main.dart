@@ -21,8 +21,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
+    final model = MainModel();
     return ScopedModel<MainModel>(
-      model: MainModel(),
+      model: model,
       child: MaterialApp(
           theme: ThemeData(
               brightness: Brightness.light,
@@ -30,7 +31,7 @@ class _MyAppState extends State<MyApp> {
               fontFamily: 'Oswald'),
               //home: AuthScreen(),
           routes: {
-            '/': (BuildContext context) => HomeScreen(),
+            '/': (BuildContext context) => HomeScreen(model),
             '/auth': (BuildContext context) => AuthScreen(),
             '/admin': (BuildContext context) => ProductAdminScreen(),
           },

@@ -3,7 +3,25 @@ import '../product_manager.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-model/main.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+
+  final MainModel model;
+
+  HomeScreen(this.model);
+
+  State<StatefulWidget> createState(){
+    return _HomeState();
+  }
+}
+
+class _HomeState extends State<HomeScreen>{
+
+  @override
+    void initState() {
+      widget.model.fetchProducts();
+      super.initState();
+    }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

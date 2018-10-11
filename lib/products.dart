@@ -11,12 +11,10 @@ class Products extends StatelessWidget {
           itemBuilder: (BuildContext context, int index) {
             return Column(
               children: <Widget>[
-                Card(
-                  child: Image.asset(model.products[index].image),
-                ),
-                Text(model.products[index].title),
-                Text(model.products[index].price.toString()),
-                Text(model.products[index].userEmail),
+                Image(image: NetworkImage(model.allProducts[index].image),),
+                Text(model.allProducts[index].title),
+                Text(model.allProducts[index].price.toString()),
+                Text(model.allProducts[index].userEmail),
                 FlatButton(
                   child: Icon(Icons.info),
                   onPressed: () {
@@ -28,7 +26,7 @@ class Products extends StatelessWidget {
                     builder: (BuildContext context, Widget child,
                             MainModel model) =>
                         FlatButton(
-                          child: Icon(model.products[index].isFavorite
+                          child: Icon(model.allProducts[index].isFavorite
                               ? Icons.favorite
                               : Icons.favorite_border),
                           onPressed: () {
