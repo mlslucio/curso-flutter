@@ -20,7 +20,6 @@ class ProductEditScreen extends StatefulWidget {
 }
 
 class _ProductEditState extends State<ProductEditScreen> {
- 
   String title = '';
   String description = '';
   double price = 0.0;
@@ -89,13 +88,17 @@ class _ProductEditState extends State<ProductEditScreen> {
                                     _formKey.currentState.validate();
                                     _formKey.currentState.save();
 
-                                    model.updateProduct(
-                                        widget.index,
-                                        Product(
-                                            title: title,
-                                            description: description,
-                                            image: 'assets/food.jpg',
-                                            price: price));
+                                    print('id' + widget.product.id);
+                                    model.updateProduct(Product(
+                                      id: widget.product.id.toString(),
+                                      title: title,
+                                      description: description,
+                                      price: price,
+                                      image: widget.product.image,
+                                      userId: model.userId.toString(),
+                                      userEmail: model.userEmail,
+                                      isFavorite: widget.product.isFavorite,
+                                    ));
                                     Navigator.pushReplacementNamed(
                                         context, "/");
                                   },

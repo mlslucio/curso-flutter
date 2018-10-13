@@ -5,43 +5,51 @@ import 'dart:convert';
 import '../models/product.dart';
 import '../models/user.dart';
 
-class ConnectedProductsModel extends Model{
+class ConnectedProductsModel extends Model {
   List<Product> _products = [];
-   User _authenticatedUser;
-   bool isLoading = false;
+  User _authenticatedUser;
+  bool _isLoading = false;
 
-    void addProduct(Product product) {
-      isLoading = true;
-      final Map<String, dynamic> productData ={
-        'title': product.title,
-        'description': product.description,
-        'price': product.price,
-        'image': 'https://image.shutterstock.com/image-photo/milk-chocolate-pieces-isolated-on-260nw-648010627.jpg',
-        'isFavorite': product.isFavorite,
-        'userEmail': _authenticatedUser.email,
-        'userId': _authenticatedUser.id
-      };
-     
-      http.post('https://curso-flutter-udemy.firebaseio.com/products.json', body: json.encode(productData))
-      .then((http.Response response){
-        isLoading = false;
-        final Map<String, dynamic> responseData = json.decode(response.body);
-        print(responseData);
-         notifyListeners();
-      });
+  String get userEmail {
+    return _authenticatedUser.email;
+  }
+
+  String get userId {
+    return _authenticatedUser.id;
+  }
+
+  void addProduct(Product product) {
+    _isLoading = true;
+    final Map<String, dynamic> productData = {
+      'title': product.title,
+      'description': product.description,
+      'price': product.price,
+      'image':
+          'https://image.shutterstock.com/image-photo/milk-chocolate-pieces-isolated-on-260nw-648010627.jpg',
+      'isFavorite': product.isFavorite,
+      'userEmail': _authenticatedUser.email,
+      'userId': _authenticatedUser.id
+    };
+
+    http
+        .post('https://curso-flutter-udemy.firebaseio.com/products.json',
+            body: json.encode(productData))
+        .then((http.Response response) {
+      _isLoading = false;
+      notifyListeners();
+    });
   }
 }
 
 class ProductsModel extends ConnectedProductsModel {
-  
   bool _showFavorites = false;
 
   List<Product> get allProducts {
     return List.from(_products);
   }
 
-  List<Product> get displayProducts { 
-   if (_showFavorites) {
+  List<Product> get displayProducts {
+    if (_showFavorites) {
       return _products.where((Product product) => product.isFavorite).toList();
     }
     return List.from(_products);
@@ -51,11 +59,28 @@ class ProductsModel extends ConnectedProductsModel {
     _products.remove(product);
   }
 
-  void updateProduct(int index, Product product) {
-     product = Product(title: product.title, description: product.description, price: product.price,
-      image:product.image, isFavorite: product.isFavorite, userEmail: _authenticatedUser.email,
-      userId: _authenticatedUser.id);
-      _products[index] = product;
+  void updateProduct(Product product) {
+    _isLoading = true;
+
+    Map<String, dynamic> data = {
+      'title': product.title,
+      'description': product.description,
+      'price': product.price,
+      'image':
+          'https://image.shutterstock.com/image-photo/milk-chocolate-pieces-isolated-on-260nw-648010627.jpg',
+      'isFavorite': product.isFavorite,
+      'userEmail': product.userEmail,
+      'userId': product.userId
+    };
+
+    http
+        .put(
+            'https://curso-flutter-udemy.firebaseio.com/products/${product.id}.json',
+            body: json.encode(data))
+        .then((http.Response response) {
+      _isLoading = false;
+      notifyListeners();
+    });
   }
 
   void toggleProductFavoriteStatus(int index) {
@@ -70,7 +95,7 @@ class ProductsModel extends ConnectedProductsModel {
         userEmail: _authenticatedUser.email,
         userId: _authenticatedUser.id);
 
-    this.updateProduct(index, product);
+    this.updateProduct(product);
     _products[index] = product;
     notifyListeners();
   }
@@ -80,31 +105,31 @@ class ProductsModel extends ConnectedProductsModel {
     notifyListeners();
   }
 
-  void fetchProducts(){
-    this.isLoading = true;
+  void fetchProducts() {
+    _isLoading = true;
     final List<Product> fetchedProducts = [];
 
-    http.get('https://curso-flutter-udemy.firebaseio.com/products.json')
-    .then((http.Response response){
+    http
+        .get('https://curso-flutter-udemy.firebaseio.com/products.json')
+        .then((http.Response response) {
       final Map<String, dynamic> productListData = json.decode(response.body);
-
-      this.isLoading = false;
-
-      productListData.forEach((String productId, dynamic productData){
-        print("product");
+      productListData.forEach((String productId, dynamic productData) {
         final Product product = Product(
-          title: productData['title'],
-          description: productData['description'],
-          image: productData['image'],
-          price: productData['price'],
-          isFavorite: productData['isFavorite'],
-          userEmail: productData['userEmail'],
-          userId: productData['userId']);
+            id: productId,
+            title: productData['title'],
+            description: productData['description'],
+            image: productData['image'],
+            price: productData['price'],
+            isFavorite: productData['isFavorite'],
+            userEmail: productData['userEmail'],
+            userId: productData['userId']);
 
-          fetchedProducts.add(product);
+        fetchedProducts.add(product);
       });
-       _products = fetchedProducts;
-       notifyListeners();
+      _products = fetchedProducts;
+      _isLoading = false;
+
+      notifyListeners();
     });
   }
 
@@ -113,9 +138,14 @@ class ProductsModel extends ConnectedProductsModel {
   }
 }
 
-class UserModel extends ConnectedProductsModel{
+class UserModel extends ConnectedProductsModel {
+  void login(String email, String passwrod) {
+    _authenticatedUser = User(id: '12121', email: email, password: passwrod);
+  }
+}
 
-  void login(String email, String passwrod){
-    _authenticatedUser = User(id:'12121', email:email, password: passwrod);
+class UtilityModel extends ConnectedProductsModel {
+  bool get isLoading {
+    return _isLoading;
   }
 }
