@@ -69,7 +69,7 @@ class _HomeState extends State<HomeScreen> {
           child: CircularProgressIndicator(),
         );
       }
-      return content;
+      return RefreshIndicator(child: content, onRefresh: model.fetchProducts);
     });
   }
 }

@@ -14,7 +14,8 @@ class Products extends StatelessWidget {
                 width: 80.0,
                 child: Column(
                   children: <Widget>[
-                    Image(
+                    FadeInImage(
+                      placeholder: AssetImage('assets/food.jpg'),
                       image: NetworkImage(model.allProducts[index].image),
                     ),
                     Row(

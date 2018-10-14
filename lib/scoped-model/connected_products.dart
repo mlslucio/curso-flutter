@@ -1,6 +1,7 @@
 import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 import '../models/product.dart';
 import '../models/user.dart';
@@ -56,6 +57,15 @@ class ProductsModel extends ConnectedProductsModel {
   }
 
   void deleteProduct(Product product) {
+    _isLoading = true;
+    http
+        .delete(
+            'https://curso-flutter-udemy.firebaseio.com/products/${product.id}.json')
+        .then((http.Response response) {
+      _isLoading = false;
+      notifyListeners();
+    });
+
     _products.remove(product);
   }
 
@@ -105,11 +115,12 @@ class ProductsModel extends ConnectedProductsModel {
     notifyListeners();
   }
 
-  void fetchProducts() {
+  Future<Null> fetchProducts() {
     _isLoading = true;
+    notifyListeners();
     final List<Product> fetchedProducts = [];
 
-    http
+    return http
         .get('https://curso-flutter-udemy.firebaseio.com/products.json')
         .then((http.Response response) {
       final Map<String, dynamic> productListData = json.decode(response.body);
