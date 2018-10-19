@@ -19,7 +19,7 @@ class ConnectedProductsModel extends Model {
     return _authenticatedUser.id;
   }
 
-  void addProduct(Product product) {
+  Future<bool> addProduct(Product product) async{
     _isLoading = true;
     final Map<String, dynamic> productData = {
       'title': product.title,
@@ -31,14 +31,24 @@ class ConnectedProductsModel extends Model {
       'userEmail': _authenticatedUser.email,
       'userId': _authenticatedUser.id
     };
+    try{
+      final http.Response response = await http
+          .post('https://curso-flutter-udemy.firebaseio.com/products.json',
+              body: json.encode(productData));
+        _isLoading = false;
+        
+        if(response.statusCode != 200 && response.statusCode != 201){
+          return false;
+        }
 
-    http
-        .post('https://curso-flutter-udemy.firebaseio.com/products.json',
-            body: json.encode(productData))
-        .then((http.Response response) {
+        notifyListeners();
+        return true;
+    }catch(error){
+      print(error);
       _isLoading = false;
-      notifyListeners();
-    });
+       notifyListeners();
+      return false;
+    }        
   }
 }
 

@@ -70,8 +70,25 @@ class _ProductCreateState extends State<ProductCreateScreen> {
                                     title: title,
                                     description: description,
                                     image: 'assets/food.jpg',
-                                    price: price));
-                                Navigator.pushReplacementNamed(context, "/");
+                                    price: price)).then((success){
+                                        print("aqui");
+                                      if(success){
+                                         Navigator.pushReplacementNamed(context, "/");
+                                      }else{
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context){
+                                        return AlertDialog(
+                                            title:Text('Algo deu errado'),
+                                            content: Text('Tente novamente'),
+                                            actions: <Widget>[
+                                              FlatButton(child: Text('Ok'), onPressed: () {Navigator.of(context).pop();},)
+                                            ],
+                                            
+                                          );});
+                                      }
+                                    });
+                               
                               },
                             )),
                   ],
