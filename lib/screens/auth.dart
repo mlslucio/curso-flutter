@@ -111,7 +111,19 @@ class _AuthState extends State<AuthScreen> {
                   child: Text('LOGIN'),
                   onPressed: () async {
                     if(_authMode == AuthMode.Login){
-                       model.login(_emailValue, _passwordValue);
+                      final Map<String, dynamic> msg = await model.login(_emailValue, _passwordValue);
+
+                      if(msg['hasError'] == false){
+                        Navigator.pushReplacementNamed(context, '/products');
+                     } else{
+                      showDialog(context: context, builder: (BuildContext context){
+                        return AlertDialog(
+                          title: Text('Ocorreu um erro'),
+                          actions: <Widget>[
+                            FlatButton(child: Text('Ok'), onPressed: () {Navigator.of(context).pop();},)
+                          ],
+                        );});
+                      }
                     }else{
                      final Map<String, dynamic> msg = await model.signup(_emailValue, _passwordValue);
 

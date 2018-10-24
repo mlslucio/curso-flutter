@@ -2,6 +2,7 @@ import 'package:scoped_model/scoped_model.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/product.dart';
 import '../models/user.dart';
@@ -33,7 +34,7 @@ class ConnectedProductsModel extends Model {
     };
     try{
       final http.Response response = await http
-          .post('https://curso-flutter-udemy.firebaseio.com/products.json',
+          .post('https://curso-flutter-udemy.firebaseio.com/products.json?auth=${_authenticatedUser.token}',
               body: json.encode(productData));
         _isLoading = false;
         
@@ -70,7 +71,7 @@ class ProductsModel extends ConnectedProductsModel {
     _isLoading = true;
     http
         .delete(
-            'https://curso-flutter-udemy.firebaseio.com/products/${product.id}.json')
+            'https://curso-flutter-udemy.firebaseio.com/products/${product.id}.json?auth=${_authenticatedUser.token}')
         .then((http.Response response) {
       _isLoading = false;
       notifyListeners();
@@ -95,7 +96,7 @@ class ProductsModel extends ConnectedProductsModel {
 
     http
         .put(
-            'https://curso-flutter-udemy.firebaseio.com/products/${product.id}.json',
+            'https://curso-flutter-udemy.firebaseio.com/products/${product.id}.json?auth=${_authenticatedUser.token}',
             body: json.encode(data))
         .then((http.Response response) {
       _isLoading = false;
@@ -131,7 +132,7 @@ class ProductsModel extends ConnectedProductsModel {
     final List<Product> fetchedProducts = [];
 
     return http
-        .get('https://curso-flutter-udemy.firebaseio.com/products.json')
+        .get('https://curso-flutter-udemy.firebaseio.com/products.json?auth=${_authenticatedUser.token}')
         .then((http.Response response) {
       final Map<String, dynamic> productListData = json.decode(response.body);
       productListData.forEach((String productId, dynamic productData) {
@@ -160,8 +161,30 @@ class ProductsModel extends ConnectedProductsModel {
 }
 
 class UserModel extends ConnectedProductsModel {
-  void login(String email, String passwrod) {
-    _authenticatedUser = User(id: '12121', email: email, password: passwrod);
+
+  get user{
+    return _authenticatedUser;
+  }
+  
+  Future<Map<String, dynamic>> login(String email, String password) async {
+    Map<String, dynamic> authData = {'email':email, 'password':password, 'returnSecureToken':true};
+    bool hasError = true;
+    
+    final http.Response response =  await http.post('https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyDHdSyo2JSiQAW-5QIhQZXqTlHEzYRiedQ',
+    body:jsonEncode(authData), headers: {'Content-Type':'application/json'});
+
+    final Map<String, dynamic> responseData = json.decode(response.body);
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('token', responseData['idToken']);
+    prefs.setString('userId', responseData['localId']);
+    prefs.setString('userEmail', responseData['localEmail']);
+
+    if(responseData.containsKey('idToken')) {
+      hasError = false;
+    }
+    return {'hasError': hasError};
   }
 
   Future<Map<String, dynamic>> signup(String email, String password) async{
@@ -178,6 +201,21 @@ class UserModel extends ConnectedProductsModel {
       hasError = false;
     }
     return {'hasError': hasError};
+  }
+
+  void autoAuth() async{
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String token = prefs.getString('token');
+
+    if(token != null){
+      String email = prefs.getString('token');
+      String id = prefs.getString('userId');
+      String token = prefs.getString('userEmail');
+
+    _authenticatedUser = User(id: id, email: email, 
+    token: token);
+    notifyListeners();
+    }
   }
 }
 

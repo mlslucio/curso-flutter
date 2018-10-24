@@ -19,19 +19,28 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+   final _model = MainModel();
+  @override
+    void initState() {
+      _model.autoAuth();
+      super.initState();
+    }
+
   @override
   Widget build(BuildContext context) {
-    final model = MainModel();
+    final _model = MainModel();
     return ScopedModel<MainModel>(
-      model: model,
+      model: _model,
       child: MaterialApp(
           theme: ThemeData(
               brightness: Brightness.light,
               primarySwatch: Colors.red,
               fontFamily: 'Oswald'),
-              //home: AuthScreen(),
+              home: ScopedModelDescendant(builder: (BuildContext context, Widget child, MainModel model){
+                return model.user == null ? AuthScreen() : HomeScreen(_model);
+              }),
           routes: {
-            '/': (BuildContext context) => HomeScreen(model),
+            '/home': (BuildContext context) => HomeScreen(_model),
             '/auth': (BuildContext context) => AuthScreen(),
             '/admin': (BuildContext context) => ProductAdminScreen(),
           },
