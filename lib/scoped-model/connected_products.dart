@@ -131,8 +131,10 @@ class ProductsModel extends ConnectedProductsModel {
     notifyListeners();
     final List<Product> fetchedProducts = [];
 
+    print(_authenticatedUser.token);
+
     return http
-        .get('https://curso-flutter-udemy.firebaseio.com/products.json?auth=${_authenticatedUser.token}')
+        .get('https://curso-flutter-udemy.firebaseio.com/products.json')
         .then((http.Response response) {
       final Map<String, dynamic> productListData = json.decode(response.body);
       productListData.forEach((String productId, dynamic productData) {
@@ -180,6 +182,13 @@ class UserModel extends ConnectedProductsModel {
     prefs.setString('token', responseData['idToken']);
     prefs.setString('userId', responseData['localId']);
     prefs.setString('userEmail', responseData['localEmail']);
+
+    String emailUser = prefs.getString('token');
+    String id = prefs.getString('userId');
+    String token = prefs.getString('userEmail');
+
+    _authenticatedUser = User(id: id, email: emailUser, 
+    token: token);
 
     if(responseData.containsKey('idToken')) {
       hasError = false;
