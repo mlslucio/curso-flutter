@@ -25,14 +25,14 @@ class ProductListScreen extends StatelessWidget {
             trailing: IconButton(
               icon: Icon(Icons.edit),
               onPressed: () {
-                Navigator.of(context)
+               Navigator.of(context)
                     .push(MaterialPageRoute(builder: (BuildContext context) {
                   return ProductEditScreen(
                     product: model.allProducts[index],
                     updateProduct: model.updateProduct,
                     index: index,
                   );
-                }));
+                })); 
               },
             ),
           );

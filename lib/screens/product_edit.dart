@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
+
 import '../scoped-model/main.dart';
 import '../models/product.dart';
+import '../models/user.dart';
 
 class ProductEditScreen extends StatefulWidget {
   final Function updateProduct;
@@ -88,15 +90,15 @@ class _ProductEditState extends State<ProductEditScreen> {
                                     _formKey.currentState.validate();
                                     _formKey.currentState.save();
 
-                                    print('id' + widget.product.id);
+                                    User user = model.user;
                                     model.updateProduct(Product(
                                       id: widget.product.id.toString(),
                                       title: title,
                                       description: description,
                                       price: price,
                                       image: widget.product.image,
-                                      userId: model.userId.toString(),
-                                      userEmail: model.userEmail,
+                                      userId: user.id,
+                                      userEmail: user.email,
                                       isFavorite: widget.product.isFavorite,
                                     ));
                                     Navigator.pushReplacementNamed(

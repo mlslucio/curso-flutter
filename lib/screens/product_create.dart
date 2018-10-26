@@ -71,7 +71,6 @@ class _ProductCreateState extends State<ProductCreateScreen> {
                                     description: description,
                                     image: 'assets/food.jpg',
                                     price: price)).then((success){
-                                        print("aqui");
                                       if(success){
                                          Navigator.pushReplacementNamed(context, "/");
                                       }else{

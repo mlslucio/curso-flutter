@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'product_create.dart';
 import 'product_list.dart';
 import '../scoped-model/main.dart';
+import '../ui-elements/logout.dart';
 
 class ProductAdminScreen extends StatelessWidget {
 
@@ -27,7 +28,9 @@ class ProductAdminScreen extends StatelessWidget {
                   ListTile(
                       title: Text('Auth'),
                       onTap: () =>
-                          Navigator.pushReplacementNamed(context, '/auth'))
+                          Navigator.pushReplacementNamed(context, '/auth')),
+                        Divider(),
+                    LogoutElement()
                 ],
               ),
             ),

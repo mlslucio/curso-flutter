@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
+import 'package:map_view/map_view.dart';
+
 import './screens/home.dart';
 import './screens/product_admin.dart';
 import './screens/product_detail.dart';
 import './screens/auth.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'scoped-model/main.dart';
 
 void main() {
+  MapView.setApiKey("AIzaSyDl9CeHLtsg3euq2pAPPM-Fmg30wcG8orU");
   runApp(MyApp());
 }
 
@@ -20,15 +23,25 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
    final _model = MainModel();
+   bool _isAuthenticated = false;
   @override
     void initState() {
+
       _model.autoAuth();
+      _model.userSubject.listen((bool isAuthenticated){
+        setState(() {
+          _isAuthenticated = isAuthenticated;
+        });
+      });
+      print(_isAuthenticated);
       super.initState();
     }
 
   @override
   Widget build(BuildContext context) {
     final _model = MainModel();
+
+    print(_isAuthenticated.toString());
     return ScopedModel<MainModel>(
       model: _model,
       child: MaterialApp(
@@ -36,9 +49,7 @@ class _MyAppState extends State<MyApp> {
               brightness: Brightness.light,
               primarySwatch: Colors.red,
               fontFamily: 'Oswald'),
-              home: ScopedModelDescendant(builder: (BuildContext context, Widget child, MainModel model){
-                return model.user == null ? AuthScreen() : HomeScreen(_model);
-              }),
+              home: !_isAuthenticated ? AuthScreen() : HomeScreen(_model),
           routes: {
             '/home': (BuildContext context) => HomeScreen(_model),
             '/auth': (BuildContext context) => AuthScreen(),

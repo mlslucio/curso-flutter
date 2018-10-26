@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:rxdart/subjects.dart';
 
 import '../models/product.dart';
 import '../models/user.dart';
@@ -11,16 +12,10 @@ class ConnectedProductsModel extends Model {
   List<Product> _products = [];
   User _authenticatedUser;
   bool _isLoading = false;
-
-  String get userEmail {
-    return _authenticatedUser.email;
-  }
-
-  String get userId {
-    return _authenticatedUser.id;
-  }
+  PublishSubject<bool> _userSubject = PublishSubject();
 
   Future<bool> addProduct(Product product) async{
+
     _isLoading = true;
     final Map<String, dynamic> productData = {
       'title': product.title,
@@ -126,15 +121,17 @@ class ProductsModel extends ConnectedProductsModel {
     notifyListeners();
   }
 
-  Future<Null> fetchProducts() {
+  Future<Null> fetchProducts() async {
     _isLoading = true;
     notifyListeners();
     final List<Product> fetchedProducts = [];
 
-    print(_authenticatedUser.token);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String token = prefs.getString('token');
 
     return http
-        .get('https://curso-flutter-udemy.firebaseio.com/products.json')
+        .get('https://curso-flutter-udemy.firebaseio.com/products.json?auth=${token}')
         .then((http.Response response) {
       final Map<String, dynamic> productListData = json.decode(response.body);
       productListData.forEach((String productId, dynamic productData) {
@@ -167,6 +164,10 @@ class UserModel extends ConnectedProductsModel {
   get user{
     return _authenticatedUser;
   }
+
+   PublishSubject<bool> get userSubject {
+     return _userSubject;
+   }
   
   Future<Map<String, dynamic>> login(String email, String password) async {
     Map<String, dynamic> authData = {'email':email, 'password':password, 'returnSecureToken':true};
@@ -183,16 +184,20 @@ class UserModel extends ConnectedProductsModel {
     prefs.setString('userId', responseData['localId']);
     prefs.setString('userEmail', responseData['localEmail']);
 
-    String emailUser = prefs.getString('token');
+    String emailUser = prefs.getString('userEmail');
     String id = prefs.getString('userId');
-    String token = prefs.getString('userEmail');
+    String token = prefs.getString('token');
 
     _authenticatedUser = User(id: id, email: emailUser, 
     token: token);
 
     if(responseData.containsKey('idToken')) {
       hasError = false;
+      _userSubject.add(true);
     }
+
+    notifyListeners();
+
     return {'hasError': hasError};
   }
 
@@ -217,14 +222,25 @@ class UserModel extends ConnectedProductsModel {
     final String token = prefs.getString('token');
 
     if(token != null){
-      String email = prefs.getString('token');
+      String token = prefs.getString('token'); 
       String id = prefs.getString('userId');
-      String token = prefs.getString('userEmail');
+      String email = prefs.getString('userEmail');
 
     _authenticatedUser = User(id: id, email: email, 
     token: token);
+    _userSubject.add(true);
     notifyListeners();
     }
+  }
+
+  void logout() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+     prefs.setString('token','');
+     prefs.setString('userId', '');
+     prefs.setString('userEmail', '');
+
+     _userSubject.add(false);
   }
 }
 
