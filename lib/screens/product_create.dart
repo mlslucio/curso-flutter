@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+
 import '../models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-model/main.dart';
+import '../widgets/location.dart';
+
 
 class ProductCreateScreen extends StatefulWidget {
   ProductCreateScreen();
@@ -55,6 +58,10 @@ class _ProductCreateState extends State<ProductCreateScreen> {
                         this.price = double.parse(value);
                       },
                     ),
+                   SizedBox(
+                      height: 10.0,
+                    ),
+                    LocationMap(),
                     SizedBox(
                       height: 10.0,
                     ),
