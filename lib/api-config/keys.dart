@@ -1,6 +1,6 @@
 class KeyConfig{
 
-  static String mapKey = "";
+  static String mapKey = "ss";
   static String mapStaticKey = "";
 
 }
