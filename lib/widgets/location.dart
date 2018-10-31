@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:map_view/map_view.dart';
 
+import '../api-config/keys.dart';
+
 class LocationMap extends StatefulWidget{
 
   @override
@@ -31,7 +33,7 @@ class _LocationState extends State<LocationMap>{
   }
 
   void getStaticMap() async {
-    final StaticMapProvider staticMapViewProvider = StaticMapProvider('AIzaSyCwQXHoGuhKqzDzm3kFalm7apaoAzUWboo');
+    final StaticMapProvider staticMapViewProvider = StaticMapProvider(KeyConfig.mapStaticKey);
     
     final Uri staticMapURI = staticMapViewProvider.getStaticUriWithMarkers([
       Marker('position','Position', 41.40332, 1.238493)

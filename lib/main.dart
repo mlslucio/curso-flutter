@@ -7,9 +7,10 @@ import './screens/product_admin.dart';
 import './screens/product_detail.dart';
 import './screens/auth.dart';
 import 'scoped-model/main.dart';
+import 'api-config/keys.dart';
 
 void main() {
-  MapView.setApiKey("AIzaSyDl9CeHLtsg3euq2pAPPM-Fmg30wcG8orU");
+  MapView.setApiKey(KeyConfig.mapKey);
   runApp(MyApp());
 }
 
