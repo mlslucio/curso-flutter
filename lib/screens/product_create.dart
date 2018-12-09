@@ -4,6 +4,7 @@ import '../models/product.dart';
 import 'package:scoped_model/scoped_model.dart';
 import '../scoped-model/main.dart';
 import '../widgets/location.dart';
+import '../widgets/image.dart';
 
 
 class ProductCreateScreen extends StatefulWidget {
@@ -65,6 +66,7 @@ class _ProductCreateState extends State<ProductCreateScreen> {
                     SizedBox(
                       height: 10.0,
                     ),
+                    ImageInput(),
                     ScopedModelDescendant<MainModel>(
                         builder: (context, child, model) => RaisedButton(
                               color: Theme.of(context).accentColor,

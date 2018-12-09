@@ -130,6 +130,8 @@ class ProductsModel extends ConnectedProductsModel {
 
     String token = prefs.getString('token');
 
+    print(token);
+
     return http
         .get('https://curso-flutter-udemy.firebaseio.com/products.json?auth=${token}')
         .then((http.Response response) {

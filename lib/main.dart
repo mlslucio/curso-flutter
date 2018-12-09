@@ -10,7 +10,7 @@ import 'scoped-model/main.dart';
 import 'api-config/keys.dart';
 
 void main() {
-  MapView.setApiKey(KeyConfig.mapKey);
+  MapView.setApiKey("ewrew");
   runApp(MyApp());
 }
 

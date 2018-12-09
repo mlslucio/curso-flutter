@@ -33,7 +33,7 @@ class _LocationState extends State<LocationMap>{
   }
 
   void getStaticMap() async {
-    final StaticMapProvider staticMapViewProvider = StaticMapProvider(KeyConfig.mapStaticKey);
+    final StaticMapProvider staticMapViewProvider = StaticMapProvider("werwer");
     
     final Uri staticMapURI = staticMapViewProvider.getStaticUriWithMarkers([
       Marker('position','Position', 41.40332, 1.238493)
