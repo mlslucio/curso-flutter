@@ -9,3 +9,5 @@ lib/api-config/
 
 .flutter-plugins
 
+node_modules
+

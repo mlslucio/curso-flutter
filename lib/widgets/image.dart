@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
 
 class ImageInput extends StatefulWidget{
   
@@ -12,6 +14,18 @@ class ImageInput extends StatefulWidget{
 
 class _ImageInputState extends State<ImageInput>{
 
+  File _imageFile = null;
+
+  void _getImage(BuildContext context,  ImageSource source) async {
+    ImagePicker.pickImage(source: source, maxWidth: 400.0)
+    .then((File image){
+      setState(() {
+        this._imageFile = image;       
+      });
+      Navigator.pop(context);
+    });
+  }
+
     void _openImagePicker(BuildContext context){
       showModalBottomSheet(context:  context, builder: (BuildContext context){
         return Container(
@@ -19,15 +33,18 @@ class _ImageInputState extends State<ImageInput>{
           padding: EdgeInsets.all(
           10.0), child: Column(
             children: <Widget>[
-              Text('Pick a image'),
               SizedBox(
                 height: 10.0,
               ),
-              FlatButton(child: Text('Use camera'), onPressed: (){},),
+              FlatButton(child: Text('Use camera'), onPressed: (){
+                _getImage(context, ImageSource.camera);
+              },),
                SizedBox(
                 height: 5.0,
               ),
-               FlatButton(child: Text('Use gallery'), onPressed: (){},),
+               FlatButton(child: Text('Use gallery'), onPressed: (){
+                 _getImage(context, ImageSource.gallery);
+               },),
             ],
           ),
         );
@@ -43,9 +60,11 @@ class _ImageInputState extends State<ImageInput>{
             child: Row(
             children: <Widget>[
               Icon(Icons.camera_alt),
-              Text('Add image')
             ],
-          ),)
+          ),),
+          SizedBox(height: 10.0,),
+          this._imageFile == null? Text("") : Image.file(this._imageFile, fit:BoxFit.cover, 
+          height: 300.0, alignment: Alignment.topCenter, width: MediaQuery.of(context).size.width)
         ],);
       }
 }
